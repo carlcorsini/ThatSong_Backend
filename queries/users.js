@@ -20,16 +20,23 @@ getAllUsersFiltered = (orderParam, orderDirection, q) => {
     .orderBy(orderParam, orderDirection)
 }
 
-getAllUsers = (orderParam, orderDirection) => {
-  return knex('users').orderBy(orderParam, orderDirection)
+getAllUsers = () => {
+  return knex('users')
 }
 
 getUserById = id => {
   return knex('users').where('id', id)
 }
 
+getUserByUsername = username => {
+  return knex('users')
+    .where('username', username)
+    .first()
+}
+
 module.exports = {
   getAllUsers,
   getAllUsersFiltered,
-  getUserById
+  getUserById,
+  getUserByUsername
 }

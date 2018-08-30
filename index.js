@@ -10,8 +10,14 @@ app.use(bodyParser.json())
 app.use(cors())
 
 const songRoutes = require('./src/routes/songs.js')
+const userRoutes = require('./src/routes/users.js')
 
 app.use('/songs', songRoutes)
+app.use('/users', userRoutes)
+
+app.use((err, req, res, next) => {
+  res.status(err.status).json(err)
+})
 
 if (process.env.NODE_ENV !== 'test') {
   app.listen(port, () => {
