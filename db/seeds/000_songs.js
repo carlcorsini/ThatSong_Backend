@@ -25,4 +25,9 @@ exports.seed = function(knex, Promise) {
         }
       ])
     })
+    .then(() =>
+      knex.raw(
+        `SELECT setval('"songs_id_seq"', (SELECT MAX("id") FROM "songs"))`
+      )
+    )
 }

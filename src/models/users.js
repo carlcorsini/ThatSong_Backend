@@ -7,8 +7,8 @@ const getAllUsersFiltered = (orderParam, orderDirection, q) => {
   })
 }
 
-const getAllUsers = (orderParam, orderDirection) => {
-  users = usersQuery.getAllUsers(orderParam, orderDirection)
+const getAllUsers = () => {
+  users = usersQuery.getAllUsers()
 
   return users.then(result => {
     return result
@@ -16,9 +16,24 @@ const getAllUsers = (orderParam, orderDirection) => {
 }
 
 const getUserById = id => {
-  users = usersQuery.getUserById(id)
+  user = usersQuery.getUserById(id)
 
-  return users.then(result => {
+  return user.then(result => {
+    return result
+  })
+}
+
+const getUserByUsername = username => {
+  user = usersQuery.getUserByUsername(username)
+  return user.then(result => {
+    return !result ? { error: 'no user found', status: 404 } : result
+  })
+}
+
+const logInUser = payload => {
+  user = usersQuery.logInUser(payload)
+
+  return user.then(result => {
     return result
   })
 }
@@ -26,5 +41,7 @@ const getUserById = id => {
 module.exports = {
   getAllUsers,
   getAllUsersFiltered,
-  getUserById
+  getUserById,
+  logInUser,
+  getUserByUsername
 }
