@@ -26,7 +26,9 @@ const getUserById = id => {
 const getUserByUsername = username => {
   user = usersQuery.getUserByUsername(username)
   return user.then(result => {
-    return !result ? { error: 'no user found', status: 404 } : result
+    return !result
+      ? { error: 'username or password incorrect', status: 404 }
+      : result
   })
 }
 
