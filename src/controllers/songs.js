@@ -25,7 +25,7 @@ createSong = (req, res, next) => {
 
   promise.catch(error => {
     // console.log(error)
-    res.status().json()
+    next(error)
   })
 }
 
