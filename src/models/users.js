@@ -1,4 +1,5 @@
 const usersQuery = require('../../queries/users')
+const bcrypt = require('bcryptjs')
 
 const getAllUsersFiltered = (orderParam, orderDirection, q) => {
   users = usersQuery.getAllUsersFiltered(orderParam, orderDirection, q)
@@ -40,10 +41,22 @@ const logInUser = payload => {
   })
 }
 
+const createUser = payload => {
+  payload.hashedPassword = bcrypt.hashSync(payload.password, 10)
+  delete payload.password
+
+  user = usersQuery.createUser(payload)
+
+  return user.then(result => {
+    return result
+  })
+}
+
 module.exports = {
   getAllUsers,
   getAllUsersFiltered,
   getUserById,
   logInUser,
-  getUserByUsername
+  getUserByUsername,
+  createUser
 }

@@ -6,11 +6,10 @@ const uuid = require('uuid/v4')
 // ===============================================
 
 getAllSongs = () => {
-  return knex('songs')
+  return knex('songs').orderBy('created_at', 'desc')
 }
 
 createSong = payload => {
-  // console.log(payload)
   return knex('songs')
     .insert(payload)
     .returning('*')

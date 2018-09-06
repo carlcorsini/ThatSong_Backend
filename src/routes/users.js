@@ -7,7 +7,9 @@ const ctrl = require('../controllers/users')
 // ===============================================
 
 router.get('/', ctrl.getAllUsers)
+router.get('/id/:id', ctrl.getUserById)
 router.get('/:username', ctrl.getUserByUsername)
 router.post('/login', ctrl.logInUser)
+router.post('/signup', ctrl.createUser)
 
 module.exports = router

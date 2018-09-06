@@ -11,7 +11,8 @@ exports.seed = function(knex, Promise) {
           last_name: 'Corsini',
           username: 'username1',
           email: 'carl.c.1192@gmail.com',
-          hashedPassword: 'password'
+          hashedPassword:
+            '$2b$10$SdGcw55BFmUpDax33P07AOW2yWpPOFoeAHu/qrQyeSSqL3RQYEg/e'
         },
         {
           id: 2,

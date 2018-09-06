@@ -25,7 +25,9 @@ getAllUsers = () => {
 }
 
 getUserById = id => {
-  return knex('users').where('id', id)
+  return knex('users')
+    .where('id', id)
+    .first()
 }
 
 getUserByUsername = username => {
@@ -34,9 +36,16 @@ getUserByUsername = username => {
     .first()
 }
 
+createUser = payload => {
+  return knex('users')
+    .insert(payload)
+    .returning('*')
+}
+
 module.exports = {
   getAllUsers,
   getAllUsersFiltered,
   getUserById,
-  getUserByUsername
+  getUserByUsername,
+  createUser
 }
