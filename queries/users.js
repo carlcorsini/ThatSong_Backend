@@ -32,7 +32,8 @@ getUserById = id => {
 
 getUserByUsername = username => {
   return knex('users')
-    .where('username', username)
+    .whereRaw(`LOWER(username) LIKE ?`, [`%${username}%`])
+    .orWhereRaw(`Upper(username) LIKE ?`, [`%${username}%`])
     .first()
 }
 
@@ -42,10 +43,29 @@ createUser = payload => {
     .returning('*')
 }
 
+getUserSongs = id => {
+  return knex('songs').where('user_id', id)
+}
+
+deleteUser = id => {
+  return knex('users')
+    .where('id', id)
+    .del()
+}
+
+updateUser = (id, payload) => {
+  return knex('users')
+    .where('id', id)
+    .update(payload)
+}
+
 module.exports = {
   getAllUsers,
   getAllUsersFiltered,
   getUserById,
   getUserByUsername,
-  createUser
+  createUser,
+  getUserSongs,
+  deleteUser,
+  updateUser
 }

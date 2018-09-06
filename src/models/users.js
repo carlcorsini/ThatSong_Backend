@@ -52,11 +52,40 @@ const createUser = payload => {
   })
 }
 
+const getUserSongs = () => {
+  songs = songsQuery.getUserSongs()
+
+  return songs.then(result => {
+    return result
+  })
+}
+
+const deleteUser = id => {
+  user = usersQuery.deleteUser(id)
+
+  return user.then(result => {
+    console.log(result)
+    return result
+  })
+}
+
+const updateUser = (id, payload) => {
+  user = usersQuery.updateUser(id, payload)
+
+  return user.then(result => {
+    console.log(result)
+    return result
+  })
+}
+
 module.exports = {
   getAllUsers,
   getAllUsersFiltered,
   getUserById,
   logInUser,
   getUserByUsername,
-  createUser
+  createUser,
+  getUserSongs,
+  deleteUser,
+  updateUser
 }

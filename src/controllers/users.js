@@ -21,10 +21,13 @@ getAllUsers = (req, res, next) => {
   })
 }
 
-getUserById = (req, res, next) => {
+getUserById = async (req, res, next) => {
   let promise = model.getUserById(req.params.id)
 
-  promise.then(result => {
+  promise.then(async result => {
+    const songs = await getUserSongs(req.params.id)
+
+    result.userSongs = songs
     res.status(200).json(result)
   })
 
@@ -71,7 +74,9 @@ logInUser = async (req, res, next) => {
           },
           'secret'
         )
+        const songs = await getUserSongs(result.id)
         result.token = token
+        result.userSongs = songs
         delete result.hashedPassword
         res.status(200).json(result)
       } else {
@@ -98,10 +103,40 @@ createUser = (req, res, next) => {
   })
 }
 
+deleteUser = (req, res, next) => {
+  let id = Number(req.params.id)
+
+  let promise = model.deleteUser(id)
+
+  promise.then(result => {
+    res.status(201).json(result)
+  })
+
+  promise.catch(error => {
+    next(error)
+  })
+}
+
+updateUser = (req, res, next) => {
+  let id = Number(req.params.id)
+  let payload = req.body
+  let promise = model.updateUser(id, payload)
+
+  promise.then(result => {
+    res.status(201).json(result)
+  })
+
+  promise.catch(error => {
+    next(error)
+  })
+}
+
 module.exports = {
   getAllUsers,
   getUserById,
   logInUser,
   getUserByUsername,
-  createUser
+  createUser,
+  deleteUser,
+  updateUser
 }

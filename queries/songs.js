@@ -6,7 +6,19 @@ const uuid = require('uuid/v4')
 // ===============================================
 
 getAllSongs = () => {
-  return knex('songs').orderBy('created_at', 'desc')
+  return knex('songs')
+    .join('users', 'users.id', '=', 'songs.user_id')
+    .select(
+      'songs.id',
+      'songs.title',
+      'songs.user_id',
+      'songs.timestamp',
+      'songs.url',
+      'songs.created_at',
+      'songs.updated_at',
+      'users.username'
+    )
+    .orderBy('songs.created_at', 'desc')
 }
 
 createSong = payload => {
