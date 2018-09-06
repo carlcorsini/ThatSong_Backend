@@ -1,33 +1,13 @@
 const model = require('../models/users')
+const { promisify } = require('util')
 const queryParser = require('../utils/queryParser')
+const jwt = require('jsonwebtoken')
+const signJwt = promisify(jwt.sign)
+const bcrypt = require('bcryptjs')
 // ===============================================
 // PROCESS USER DATA MODELS TO READ/SHOW
 // ===============================================
 
-// getAllUsers = (req, res, next) => {
-//   let query = queryParser(req.query)
-//   console.log(query)
-//   let { orderParam, orderDirection, q } = query
-//
-//   let promise = q
-//     ? model.getAllUsersFiltered(orderParam, orderDirection, q)
-//     : model.getAllUsers(orderParam, orderDirection)
-//
-//   promise.then(users => {
-//     res
-//       .header('Access-Control-Expose-Headers', 'Content-Range')
-//       .header('Content-Range', users.length)
-//       .status(200)
-//       .json(users)
-//   })
-//
-//   promise.catch(error => {
-//     res.status().json()
-//   })
-// }
-//
-//
-//
 getAllUsers = (req, res, next) => {
   let promise = model.getAllUsers()
 
@@ -66,17 +46,32 @@ getUserByUsername = (req, res, next) => {
 }
 
 logInUser = async (req, res, next) => {
-  // console.log(req.body)
   let payload = req.body
   let promise = model.getUserByUsername(payload.username)
   if ((await promise.error.status) === 404) {
     return next(await promise)
   } else {
-    return promise.then(result => {
-      console.log(result)
-      console.log(payload)
-      if (payload.password === result.hashedPassword) {
+    return promise.then(async result => {
+      const isValidPassword = await bcrypt.compare(
+        payload.password,
+        result.hashedPassword
+      )
+
+      if (isValidPassword) {
         result.isLoggedIn = true
+        const timeIssued = Math.floor(Date.now() / 1000)
+        const timeExpires = timeIssued + 86400 * 14
+        const token = await signJwt(
+          {
+            iss: 'thatSong',
+            aud: 'thatSong',
+            iat: timeIssued,
+            exp: timeExpires,
+            identity: result.id
+          },
+          'secret'
+        )
+        result.token = token
         delete result.hashedPassword
         res.status(200).json(result)
       } else {
@@ -90,9 +85,23 @@ logInUser = async (req, res, next) => {
   })
 }
 
+createUser = (req, res, next) => {
+  let payload = req.body
+  let promise = model.createUser(payload)
+
+  promise.then(result => {
+    res.status(201).json(result)
+  })
+
+  promise.catch(error => {
+    next(error)
+  })
+}
+
 module.exports = {
   getAllUsers,
   getUserById,
   logInUser,
-  getUserByUsername
+  getUserByUsername,
+  createUser
 }
