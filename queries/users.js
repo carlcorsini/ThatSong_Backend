@@ -32,8 +32,8 @@ getUserById = id => {
 
 getUserByUsername = username => {
   return knex('users')
-    .whereRaw(`LOWER(username) LIKE ?`, [`%${username}%`])
-    .orWhereRaw(`Upper(username) LIKE ?`, [`%${username}%`])
+    .whereRaw(`Lower(username) LIKE ?`, `%${username}%`)
+    .orWhereRaw(`Upper(username) LIKE ?`, `%${username}%`)
     .first()
 }
 
@@ -44,7 +44,9 @@ createUser = payload => {
 }
 
 getUserSongs = id => {
-  return knex('songs').where('user_id', id)
+  return knex('songs')
+    .where('user_id', id)
+    .orderBy('created_at', 'desc')
 }
 
 deleteUser = id => {

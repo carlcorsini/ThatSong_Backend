@@ -37,7 +37,7 @@ getUserById = async (req, res, next) => {
 }
 
 getUserByUsername = (req, res, next) => {
-  let promise = model.getUserByUsername(req.params.username)
+  let promise = model.getUserByUsername(req.params.username.toLowerCase())
 
   promise.then(result => {
     return result.error ? next(result) : res.status(200).json(result)
@@ -50,11 +50,13 @@ getUserByUsername = (req, res, next) => {
 
 logInUser = async (req, res, next) => {
   let payload = req.body
-  let promise = model.getUserByUsername(payload.username)
+  console.log(payload)
+  let promise = model.getUserByUsername(payload.username.toLowerCase())
   if ((await promise.error.status) === 404) {
     return next(await promise)
   } else {
     return promise.then(async result => {
+      console.log(result)
       const isValidPassword = await bcrypt.compare(
         payload.password,
         result.hashedPassword
