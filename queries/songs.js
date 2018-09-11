@@ -16,6 +16,7 @@ getAllSongs = () => {
       'songs.url',
       'songs.created_at',
       'songs.updated_at',
+      'songs.notes',
       'users.username'
     )
     .orderBy('songs.created_at', 'desc')

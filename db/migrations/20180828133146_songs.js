@@ -5,6 +5,7 @@ exports.up = function(knex, Promise) {
     table.string('title').notNullable()
     table.integer('user_id').notNullable()
     table.string('url').notNullable()
+    table.string('notes')
     table.timestamp('created_at').defaultTo(knex.fn.now())
     table.timestamp('updated_at').defaultTo(knex.fn.now())
   })
