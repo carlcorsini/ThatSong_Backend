@@ -3,7 +3,11 @@ exports.up = function(knex, Promise) {
     table.increments()
     table.string('timestamp').notNullable()
     table.string('title').notNullable()
-    table.integer('user_id').notNullable()
+    table.string('artist').notNullable()
+    table
+      .integer('user_id')
+      .references('users.id')
+      .onDelete('cascade')
     table.string('url').notNullable()
     table.string('notes')
     table.timestamp('created_at').defaultTo(knex.fn.now())

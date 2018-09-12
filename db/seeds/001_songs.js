@@ -9,6 +9,7 @@ exports.seed = function(knex, Promise) {
           id: 1,
           timestamp: '12:27',
           title: 'The Moisture Manifesto: A Study By Sweat Michaels',
+          artist: 'McSneako',
           user_id: 1,
           url: '/mcsneako/the-moisture-manifesto-a-study-by-sweat-michaels',
           notes: 'notes'
@@ -17,6 +18,7 @@ exports.seed = function(knex, Promise) {
           id: 2,
           timestamp: '06:54',
           title: 'The Moisture Manifesto: A Study By Sweat Michaels',
+          artist: 'McSneako',
           user_id: 1,
           url: '/mcsneako/the-moisture-manifesto-a-study-by-sweat-michaels',
           notes: 'notes'
@@ -25,6 +27,7 @@ exports.seed = function(knex, Promise) {
           id: 3,
           timestamp: '20:27',
           title: 'The Moisture Manifesto: A Study By Sweat Michaels',
+          artist: 'McSneako',
           user_id: 2,
           url: '/mcsneako/the-moisture-manifesto-a-study-by-sweat-michaels',
           notes: 'notes'
@@ -33,6 +36,7 @@ exports.seed = function(knex, Promise) {
           id: 4,
           timestamp: '2:27',
           title: 'The Moisture Manifesto: A Study By Sweat Michaels',
+          artist: 'McSneako',
           user_id: 2,
           url: '/mcsneako/the-moisture-manifesto-a-study-by-sweat-michaels',
           notes: 'notes'
@@ -41,6 +45,7 @@ exports.seed = function(knex, Promise) {
           id: 5,
           timestamp: '3:37',
           title: 'The Moisture Manifesto: A Study By Sweat Michaels',
+          artist: 'McSneako',
           user_id: 3,
           url: '/mcsneako/the-moisture-manifesto-a-study-by-sweat-michaels',
           notes: 'notes'
@@ -49,6 +54,7 @@ exports.seed = function(knex, Promise) {
           id: 6,
           timestamp: '21:56',
           title: 'The Moisture Manifesto: A Study By Sweat Michaels',
+          artist: 'McSneako',
           user_id: 3,
           url: '/mcsneako/the-moisture-manifesto-a-study-by-sweat-michaels',
           notes: 'notes'

@@ -60,6 +60,14 @@ const getUserSongs = () => {
   })
 }
 
+const getUserFriends = () => {
+  friends = songsQuery.getUserFriends()
+
+  return friends.then(result => {
+    return result
+  })
+}
+
 const deleteUser = id => {
   user = usersQuery.deleteUser(id)
 
@@ -87,5 +95,6 @@ module.exports = {
   createUser,
   getUserSongs,
   deleteUser,
-  updateUser
+  updateUser,
+  getUserSongs
 }

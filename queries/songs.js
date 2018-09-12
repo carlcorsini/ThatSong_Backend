@@ -11,6 +11,7 @@ getAllSongs = () => {
     .select(
       'songs.id',
       'songs.title',
+      'songs.artist',
       'songs.user_id',
       'songs.timestamp',
       'songs.url',
