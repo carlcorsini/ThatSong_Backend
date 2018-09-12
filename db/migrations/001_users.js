@@ -12,7 +12,7 @@ exports.up = function(knex, Promise) {
     table.text('profile_pic').defaultTo('')
     table.text('location').defaultTo('')
     table.text('bio').defaultTo('')
-
+    table.text('soundcloud_url')
     table.timestamp('created_at').defaultTo(knex.fn.now())
     table.timestamp('updated_at').defaultTo(knex.fn.now())
   })
