@@ -34,6 +34,14 @@ getUserSongs = id => {
     .orderBy('created_at', 'desc')
 }
 
+getUserFriends = id => {
+  return knex('friendships')
+    .join('users', 'users.id', '=', 'friendships.followee_id')
+    .where('friendships.follower_id', id)
+    .select('users.id', 'users.username')
+    .orderBy('friendships.created_at', 'desc')
+}
+
 deleteUser = id => {
   return knex('users')
     .where('id', id)

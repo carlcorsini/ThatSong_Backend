@@ -26,8 +26,10 @@ getUserById = async (req, res, next) => {
 
   promise.then(async result => {
     const songs = await getUserSongs(req.params.id)
+    const friends = await getUserFriends(result.id)
 
     result.userSongs = songs
+    result.friends = friends
     res.status(200).json(result)
   })
 
@@ -77,8 +79,10 @@ logInUser = async (req, res, next) => {
           'secret'
         )
         const songs = await getUserSongs(result.id)
+        const friends = await getUserFriends(result.id)
         result.token = token
         result.userSongs = songs
+        result.friends = friends
         delete result.hashedPassword
         res.status(200).json(result)
       } else {
