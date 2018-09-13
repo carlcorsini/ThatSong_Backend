@@ -1,13 +1,6 @@
 const usersQuery = require('../../queries/users')
 const bcrypt = require('bcryptjs')
 
-const getAllUsersFiltered = (orderParam, orderDirection, q) => {
-  users = usersQuery.getAllUsersFiltered(orderParam, orderDirection, q)
-  return users.then(result => {
-    return result
-  })
-}
-
 const getAllUsers = () => {
   users = usersQuery.getAllUsers()
 
@@ -52,16 +45,16 @@ const createUser = payload => {
   })
 }
 
-const getUserSongs = () => {
-  songs = songsQuery.getUserSongs()
+const getUserSongs = id => {
+  songs = usersQuery.getUserSongs(id)
 
   return songs.then(result => {
     return result
   })
 }
 
-const getUserFriends = () => {
-  friends = songsQuery.getUserFriends()
+const getUserFriends = id => {
+  friends = usersQuery.getUserFriends(id)
 
   return friends.then(result => {
     return result
@@ -72,7 +65,6 @@ const deleteUser = id => {
   user = usersQuery.deleteUser(id)
 
   return user.then(result => {
-    console.log(result)
     return result
   })
 }
@@ -81,14 +73,12 @@ const updateUser = (id, payload) => {
   user = usersQuery.updateUser(id, payload)
 
   return user.then(result => {
-    console.log(result)
     return result
   })
 }
 
 module.exports = {
   getAllUsers,
-  getAllUsersFiltered,
   getUserById,
   logInUser,
   getUserByUsername,
@@ -96,5 +86,6 @@ module.exports = {
   getUserSongs,
   deleteUser,
   updateUser,
-  getUserSongs
+  getUserSongs,
+  getUserFriends
 }

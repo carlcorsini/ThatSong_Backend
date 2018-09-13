@@ -16,7 +16,16 @@ const createSong = payload => {
   })
 }
 
+const deleteSong = id => {
+  song = songsQuery.deleteSong(id)
+
+  return song.then(result => {
+    return result
+  })
+}
+
 module.exports = {
   getAllSongs,
-  createSong
+  createSong,
+  deleteSong
 }
