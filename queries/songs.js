@@ -29,7 +29,15 @@ createSong = payload => {
     .returning('*')
 }
 
+deleteSong = id => {
+  return knex('songs')
+    .where('id', id)
+    .del()
+    .returning('*')
+}
+
 module.exports = {
   getAllSongs,
-  createSong
+  createSong,
+  deleteSong
 }

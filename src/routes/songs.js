@@ -8,5 +8,6 @@ const ctrl = require('../controllers/songs')
 
 router.get('/', ctrl.getAllSongs)
 router.post('/', ctrl.createSong)
+router.delete('/:id', ctrl.deleteSong)
 
 module.exports = router

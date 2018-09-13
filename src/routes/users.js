@@ -10,7 +10,7 @@ router.get('/', ctrl.getAllUsers)
 router.get('/id/:id', ctrl.getUserById)
 router.get('/:username', ctrl.getUserByUsername)
 router.post('/login', ctrl.logInUser)
-router.post('/signup', ctrl.createUser)
+router.post('/', ctrl.createUser)
 router.delete('/:id', ctrl.deleteUser)
 router.put('/:id', ctrl.updateUser)
 

@@ -46,12 +46,14 @@ deleteUser = id => {
   return knex('users')
     .where('id', id)
     .del()
+    .returning('*')
 }
 
 updateUser = (id, payload) => {
   return knex('users')
     .where('id', id)
     .update(payload)
+    .returning('*')
 }
 
 module.exports = {
@@ -60,6 +62,7 @@ module.exports = {
   getUserByUsername,
   createUser,
   getUserSongs,
+  getUserFriends,
   deleteUser,
   updateUser
 }

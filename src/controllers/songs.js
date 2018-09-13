@@ -15,7 +15,6 @@ getAllSongs = (req, res, next) => {
 }
 
 createSong = (req, res, next) => {
-  console.log(req.body)
   let payload = req.body
   let promise = model.createSong(payload)
 
@@ -24,12 +23,27 @@ createSong = (req, res, next) => {
   })
 
   promise.catch(error => {
-    // console.log(error)
+    console.log(error)
+    next(error)
+  })
+}
+
+deleteSong = (req, res, next) => {
+  let id = req.params.id
+  let promise = model.deleteSong(id)
+
+  promise.then(result => {
+    res.status(201).json(result)
+  })
+
+  promise.catch(error => {
+    console.log(error)
     next(error)
   })
 }
 
 module.exports = {
   getAllSongs,
-  createSong
+  createSong,
+  deleteSong
 }
