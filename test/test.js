@@ -96,7 +96,7 @@ describe('thatSong', function() {
     last_name: 'jerry',
     email: 'john@jerry.jerry',
     username: 'heresjohnny',
-    password: 'Awesome1!!'
+    password: 'Password123!'
   }
 
   describe('#createUser()', function() {
