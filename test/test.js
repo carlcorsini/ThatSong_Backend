@@ -6,19 +6,6 @@ const songs = require('../src/models/songs')
 const config = require('../knexfile').test
 chai.use(require('chai-as-promised'))
 
-const data = {
-  id: 5,
-  user_id: 1,
-  amount: 500,
-  last_day_of_pay_period: '2018-04-04'
-}
-const updateData = {
-  id: 1,
-  user_id: 1,
-  amount: 750,
-  last_day_of_pay_period: '2018-04-24'
-}
-
 describe('thatSong', function() {
   before(function() {
     const tmpConnection = require('knex')({
@@ -28,7 +15,7 @@ describe('thatSong', function() {
     return tmpConnection
       .raw(`CREATE DATABASE ${config.connection.database};`)
       .catch(err => {
-        // console.log(errr);
+        // console.log(err)
         Promise.resolve('Everything is OK')
       })
       .then(() => (global.knex = require('../queries/db')))
