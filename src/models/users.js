@@ -26,8 +26,8 @@ const getUserByUsername = username => {
   })
 }
 
-const logInUser = payload => {
-  user = usersQuery.logInUser(payload)
+const loginUser = payload => {
+  user = usersQuery.loginUser(payload)
 
   return user.then(result => {
     return result
@@ -80,7 +80,7 @@ const updateUser = (id, payload) => {
 module.exports = {
   getAllUsers,
   getUserById,
-  logInUser,
+  loginUser,
   getUserByUsername,
   createUser,
   getUserSongs,

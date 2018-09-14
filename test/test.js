@@ -2,7 +2,9 @@ require('dotenv').load()
 const chai = require('chai')
 const expect = chai.expect
 const users = require('../src/models/users')
+const usersControllers = require('../src/controllers/users')
 const songs = require('../src/models/songs')
+const Response = require('./response')
 const config = require('../knexfile').test
 chai.use(require('chai-as-promised'))
 
@@ -55,6 +57,23 @@ describe('thatSong', function() {
         expect(result.id).to.equal(1)
         expect(result.first_name).to.equal('Carl')
         expect(result.last_name).to.equal('Corsini')
+      })
+    })
+  })
+
+  const loginUserData = {
+    body: {
+      username: 'djshmarl',
+      password: 'yahoo'
+    }
+  }
+
+  const res = new Response()
+
+  describe('#loginUser()', function() {
+    it('should login one user and return a request body', function() {
+      return usersControllers.loginUser(loginUserData, res).then(result => {
+        expect(user.client).to.be.ok
       })
     })
   })
@@ -143,54 +162,42 @@ describe('thatSong', function() {
     })
   })
 
-  //
-  //   describe('#getEarningsByUserId()', function() {
-  //     it('should return one earning from the database', function() {
-  //       return earnings.getEarningsByUserId(1).then(result => {
-  //         expect(result.length).to.equal(2)
-  //
-  //         const data = result[0]
-  //         expect(data.id).to.be.ok
-  //         expect(data.last_day_of_pay_period).to.be.ok
-  //       })
-  //     })
-  //   })
-  //
-  //   describe('#createEarnings()', function() {
-  //     it('should create one earning in the database', function() {
-  //       return earnings.createEarnings(data).then(result => {
-  //         expect(result.length).to.equal(1)
-  //
-  //         const data = result[0]
-  //         expect(data.id).to.be.ok
-  //         expect(data.amount).to.equal(500)
-  //         expect(data.last_day_of_pay_period).to.be.ok
-  //         // expect(data.last_day_of_pay_period).to.equal('Wed, 04 Apr 2018 07:00:00 GMT')
-  //       })
-  //     })
-  //   })
-  //
-  //   describe('#updateEarnings()', function() {
-  //     it('should update one earning from the database', function() {
-  //       return earnings.updateEarnings(1, updateData).then(result => {
-  //         expect(result.length).to.equal(1)
-  //
-  //         const data = result[0]
-  //         expect(data.id).to.be.ok
-  //         expect(data.last_day_of_pay_period).to.be.ok
-  //       })
-  //     })
-  //   })
-  //
-  //   describe('#deleteEarnings()', function() {
-  //     it('should delete one earning from the database', function() {
-  //       return earnings.deleteEarnings(1).then(result => {
-  //         expect(result.length).to.equal(1)
-  //
-  //         const data = result[0]
-  //         expect(data.id).to.be.ok
-  //         expect(data.last_day_of_pay_period).to.be.ok
-  //       })
-  //     })
-  //   })
+  const createSongData = {
+    timestamp: '14:27',
+    title: 'this is a title',
+    artist: 'test artist',
+    url: '/test/the-testo-manifesto',
+    notes: 'this is a note',
+    user_id: 3
+  }
+
+  describe('#createSong()', function() {
+    it('should create one song in the database', function() {
+      return songs.createSong(createSongData).then(result => {
+        const song = result[0]
+
+        expect(song.id).to.equal(7)
+        expect(song.title).to.equal('this is a title')
+        expect(song.artist).to.equal('test artist')
+        expect(song.url).to.equal('/test/the-testo-manifesto')
+        expect(song.notes).to.equal('this is a note')
+        expect(song.user_id).to.equal(3)
+      })
+    })
+  })
+
+  describe('#deleteSong()', function() {
+    it('should delete one song in the database', function() {
+      return songs.deleteSong(7).then(result => {
+        const song = result[0]
+
+        expect(song.id).to.equal(7)
+        expect(song.title).to.equal('this is a title')
+        expect(song.artist).to.equal('test artist')
+        expect(song.url).to.equal('/test/the-testo-manifesto')
+        expect(song.notes).to.equal('this is a note')
+        expect(song.user_id).to.equal(3)
+      })
+    })
+  })
 })
