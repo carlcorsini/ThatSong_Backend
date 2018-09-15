@@ -46,7 +46,9 @@ deleteUser = id => {
   return knex('users')
     .where('id', id)
     .del()
-    .returning('*')
+    .then(result => {
+      return knex('users')
+    })
 }
 
 updateUser = (id, payload) => {

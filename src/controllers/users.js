@@ -54,50 +54,53 @@ getUserByUsername = (req, res, next) => {
 loginUser = async (req, res, next) => {
   let payload = req.body
   // find user in database using username off of payload
-  let promise = model.getUserByUsername(payload.username.toLowerCase())
-  if ((await promise.error.status) === 404) {
+  let promise = await model.getUserByUsername(payload.username.toLowerCase())
+
+  if (promise.error) {
     // if no match, return eror
-    return next(await promise)
+    console.log('no user found')
+    next(await promise)
+    return
   } else {
+    console.log('user found')
     // if user found, compare payload password with result from getByUsername
-    return promise.then(async result => {
-      const isValidPassword = await bcrypt.compare(
-        payload.password,
-        result.hashedPassword
+
+    const isValidPassword = await bcrypt.compare(
+      payload.password,
+      promise.hashedPassword
+    )
+
+    if (isValidPassword) {
+      // if password is valid omit password from user body
+      delete promise.hashedPassword
+      // create JWT token
+      promise.isLoggedIn = true
+      const timeIssued = Math.floor(Date.now() / 1000)
+      const timeExpires = timeIssued + 86400 * 14
+      const token = await signJwt(
+        {
+          iss: 'thatSong',
+          aud: 'thatSong',
+          iat: timeIssued,
+          exp: timeExpires,
+          identity: promise.id
+        },
+        'secret'
       )
+      // once token is created find user's songs and friends
+      const songs = await getUserSongs(promise.id)
+      const friends = await getUserFriends(promise.id)
+      // attach token, songs and friends to response body
+      promise.token = token
+      promise.userSongs = songs
+      promise.friends = friends
 
-      if (isValidPassword) {
-        // if password is valid omit password from user body
-        delete result.hashedPassword
-        // create JWT token
-        result.isLoggedIn = true
-        const timeIssued = Math.floor(Date.now() / 1000)
-        const timeExpires = timeIssued + 86400 * 14
-        const token = await signJwt(
-          {
-            iss: 'thatSong',
-            aud: 'thatSong',
-            iat: timeIssued,
-            exp: timeExpires,
-            identity: result.id
-          },
-          'secret'
-        )
-        // once token is created find user's songs and friends
-        const songs = await getUserSongs(result.id)
-        const friends = await getUserFriends(result.id)
-        // attach token, songs and friends to response body
-        result.token = token
-        result.userSongs = songs
-        result.friends = friends
+      res.status(200).json(promise)
 
-        res.status(200).json(result)
-
-        return result
-      } else {
-        next({ error: 'username or password not found', status: 404 })
-      }
-    })
+      return promise
+    } else {
+      next({ error: 'username or password not found', status: 404 })
+    }
   }
 
   promise.catch(error => {

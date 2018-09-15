@@ -140,9 +140,9 @@ describe('thatSong', function() {
     it('should delete one user from the database', function() {
       return users.deleteUser(1).then(result => {
         const user = result[0]
-        expect(user.id).to.equal(1)
-        expect(user.first_name).to.equal('jerry')
-        expect(user.last_name).to.equal('garcia')
+        expect(user.id).to.equal(2)
+        expect(user.first_name).to.equal('Jon')
+        expect(user.last_name).to.equal('Riemer')
       })
     })
   })
@@ -189,14 +189,17 @@ describe('thatSong', function() {
   describe('#deleteSong()', function() {
     it('should delete one song in the database', function() {
       return songs.deleteSong(7).then(result => {
+        expect(result.length).to.equal(4)
         const song = result[0]
-
-        expect(song.id).to.equal(7)
-        expect(song.title).to.equal('this is a title')
-        expect(song.artist).to.equal('test artist')
-        expect(song.url).to.equal('/test/the-testo-manifesto')
-        expect(song.notes).to.equal('this is a note')
-        expect(song.user_id).to.equal(3)
+        expect(song.title).to.equal(
+          'The Moisture Manifesto: A Study By Sweat Michaels'
+        )
+        expect(song.artist).to.equal('McSneako')
+        expect(song.url).to.equal(
+          '/mcsneako/the-moisture-manifesto-a-study-by-sweat-michaels'
+        )
+        expect(song.notes).to.equal('notes')
+        expect(song.user_id).to.equal(2)
       })
     })
   })

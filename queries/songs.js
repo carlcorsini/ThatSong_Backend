@@ -33,7 +33,23 @@ deleteSong = id => {
   return knex('songs')
     .where('id', id)
     .del()
-    .returning('*')
+    .then(result => {
+      return knex('songs')
+        .join('users', 'users.id', '=', 'songs.user_id')
+        .select(
+          'songs.id',
+          'songs.title',
+          'songs.artist',
+          'songs.user_id',
+          'songs.timestamp',
+          'songs.url',
+          'songs.created_at',
+          'songs.updated_at',
+          'songs.notes',
+          'users.username'
+        )
+        .orderBy('songs.created_at', 'desc')
+    })
 }
 
 module.exports = {
