@@ -5,7 +5,7 @@ getAllSongs = (req, res, next) => {
   let promise = model.getAllSongs()
 
   promise.then(result => {
-    res.status(200).json(result)
+    return result.error ? next(result) : res.status(200).json(result)
   })
 
   promise.catch(error => {
@@ -19,7 +19,7 @@ createSong = (req, res, next) => {
   let promise = model.createSong(payload)
 
   promise.then(result => {
-    res.status(201).json(result)
+    return result.error ? next(result) : res.status(200).json(result)
   })
 
   promise.catch(error => {
@@ -33,7 +33,7 @@ deleteSong = (req, res, next) => {
   let promise = model.deleteSong(id)
 
   promise.then(result => {
-    res.status(201).json(result)
+    return result.error ? next(result) : res.status(200).json(result)
   })
 
   promise.catch(error => {

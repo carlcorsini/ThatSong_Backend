@@ -22,68 +22,48 @@ exports.seed = function(knex, Promise) {
         },
         {
           id: 4,
-          followee_id: 1,
-          follower_id: 5
+          followee_id: 2,
+          follower_id: 1
         },
         {
           id: 5,
           followee_id: 2,
-          follower_id: 1
+          follower_id: 3
         },
         {
           id: 6,
           followee_id: 2,
-          follower_id: 3
-        },
-        {
-          id: 7,
-          followee_id: 2,
           follower_id: 4
         },
         {
+          id: 7,
+          followee_id: 3,
+          follower_id: 1
+        },
+        {
           id: 8,
-          followee_id: 2,
-          follower_id: 5
+          followee_id: 3,
+          follower_id: 2
         },
         {
           id: 9,
           followee_id: 3,
-          follower_id: 1
-        },
-        {
-          id: 10,
-          followee_id: 3,
-          follower_id: 2
-        },
-        {
-          id: 11,
-          followee_id: 3,
           follower_id: 4
         },
         {
-          id: 12,
-          followee_id: 3,
-          follower_id: 5
-        },
-        {
-          id: 13,
+          id: 10,
           followee_id: 4,
           follower_id: 1
         },
         {
-          id: 14,
+          id: 11,
           followee_id: 4,
           follower_id: 2
         },
         {
-          id: 15,
+          id: 12,
           followee_id: 4,
           follower_id: 3
-        },
-        {
-          id: 16,
-          followee_id: 4,
-          follower_id: 5
         }
       ])
     })
