@@ -17,8 +17,7 @@ getAllUsers = (req, res, next) => {
   })
 
   promise.catch(error => {
-    console.log(error)
-    res.status().json()
+    next(error)
   })
 }
 
@@ -31,11 +30,12 @@ getUserById = async (req, res, next) => {
 
     result.userSongs = songs
     result.friends = friends
+    delete result.hashedPassword
     res.status(200).json(result)
   })
 
   promise.catch(error => {
-    res.status().json()
+    next(error)
   })
 }
 
@@ -47,7 +47,7 @@ getUserByUsername = (req, res, next) => {
   })
 
   promise.catch(error => {
-    res.status().json(error)
+    next(error)
   })
 }
 
@@ -58,13 +58,12 @@ loginUser = async (req, res, next) => {
 
   if (promise.error) {
     // if no match, return eror
-    console.log('no user found')
-    next(await promise)
+
+    next(promise)
+
     return
   } else {
-    console.log('user found')
     // if user found, compare payload password with result from getByUsername
-
     const isValidPassword = await bcrypt.compare(
       payload.password,
       promise.hashedPassword
@@ -113,7 +112,7 @@ createUser = (req, res, next) => {
   let promise = model.createUser(payload)
 
   promise.then(result => {
-    res.status(201).json(result)
+    return result.error ? next(result) : res.status(201).json(result)
   })
 
   promise.catch(error => {

@@ -11,9 +11,11 @@ app.use(cors())
 
 const songRoutes = require('./src/routes/songs.js')
 const userRoutes = require('./src/routes/users.js')
+const friendRoutes = require('./src/routes/friends.js')
 
 app.use('/songs', songRoutes)
 app.use('/users', userRoutes)
+app.use('/friends', friendRoutes)
 
 app.use((err, req, res, next) => {
   res.status(err.status).json(err)
