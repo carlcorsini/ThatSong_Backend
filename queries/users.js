@@ -38,7 +38,7 @@ getUserFriends = id => {
   return knex('friendships')
     .join('users', 'users.id', '=', 'friendships.followee_id')
     .where('friendships.follower_id', id)
-    .select('users.id', 'users.username')
+    .select('users.id', 'users.username', 'users.profile_pic')
     .orderBy('friendships.created_at', 'desc')
 }
 
