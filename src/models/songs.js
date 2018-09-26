@@ -14,7 +14,7 @@ const createSong = payload => {
   song = songsQuery.createSong(payload)
 
   return song.then(result => {
-    return !result ? { error: 'error creating song', status: 404 } : result
+    return result.error ? { error: 'error creating song', status: 404 } : result
   })
 }
 
