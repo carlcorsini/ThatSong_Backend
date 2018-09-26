@@ -1,5 +1,6 @@
 const model = require('../models/songs')
 const queryParser = require('../utils/queryParser')
+const authenticate = require('../utils/authenticate')
 
 getAllSongs = (req, res, next) => {
   let promise = model.getAllSongs()
@@ -10,11 +11,15 @@ getAllSongs = (req, res, next) => {
 
   promise.catch(error => {
     console.log(error)
-    res.status().json()
+    next(error)
   })
 }
 
 createSong = (req, res, next) => {
+  let authorization = authenticate(req.headers.authorization)
+  if (authorization.error) {
+    return next(authorization)
+  }
   let payload = req.body
   let promise = model.createSong(payload)
 
@@ -24,7 +29,9 @@ createSong = (req, res, next) => {
 
   promise.catch(error => {
     console.log(error)
-    next(error)
+    Promise.resolve('nothing')
+    err = { message: 'error creating song', status: 500 }
+    next(err)
   })
 }
 

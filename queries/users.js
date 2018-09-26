@@ -19,6 +19,8 @@ getUserByUsername = username => {
   return knex('users')
     .whereRaw(`Lower(username) LIKE ?`, `%${username}%`)
     .orWhereRaw(`Upper(username) LIKE ?`, `%${username}%`)
+    .orWhereRaw(`Lower(email) LIKE ?`, `%${username}%`)
+    .orWhereRaw(`Upper(email) LIKE ?`, `%${username}%`)
     .first()
 }
 
