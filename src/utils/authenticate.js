@@ -16,7 +16,7 @@ const authenticate = token => {
   } catch (error) {
     console.error(error) // eslint-disable-line no-console
 
-    return { error: 'unknown erro' }
+    return { error: 'unknown error', status: 500 }
   }
 }
 

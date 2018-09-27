@@ -6,7 +6,7 @@ const uuid = require('uuid/v4')
 // ===============================================
 
 getAllUsers = () => {
-  return knex('users')
+  return knex('users').orderBy('created_at', 'desc')
 }
 
 getUserById = id => {
