@@ -1,15 +1,20 @@
 const model = require('../models/users')
 const { promisify } = require('util')
-const queryParser = require('../utils/queryParser')
 const jwt = require('jsonwebtoken')
 const signJwt = promisify(jwt.sign)
 const bcrypt = require('bcryptjs')
+const authenticate = require('../utils/authenticate')
 
 // ===============================================
 // USER CONTROLLERS
 // ===============================================
 
 getAllUsers = (req, res, next) => {
+  let authorization = authenticate(req.headers.authorization)
+  if (authorization.error) {
+    return next(authorization)
+  }
+
   let promise = model.getAllUsers()
 
   promise.then(result => {
@@ -22,15 +27,20 @@ getAllUsers = (req, res, next) => {
 }
 
 getUserById = async (req, res, next) => {
+  let authorization = authenticate(req.headers.authorization)
+  if (authorization.error) {
+    return next(authorization)
+  }
+
   let promise = model.getUserById(req.params.id)
 
   promise.then(async result => {
+    delete result.hashedPassword
     const songs = await getUserSongs(req.params.id)
     const friends = await getUserFriends(result.id)
-
     result.userSongs = songs
     result.friends = friends
-    delete result.hashedPassword
+
     res.status(200).json(result)
   })
 
@@ -58,7 +68,6 @@ loginUser = async (req, res, next) => {
 
   if (promise.error) {
     // if no match, return eror
-
     next(promise)
 
     return
@@ -109,9 +118,13 @@ loginUser = async (req, res, next) => {
 
 createUser = (req, res, next) => {
   let payload = req.body
+  let doesExist = model.getUserByUsername(payload.username.toLowerCase())
+  if (doesExist.username)
+    return next({ error: 'that email is taken', status: '404' })
   let promise = model.createUser(payload)
 
   promise.then(result => {
+    delete result[0].hashedPassword
     return result.error ? next(result) : res.status(201).json(result)
   })
 

@@ -1,5 +1,4 @@
 const model = require('../models/songs')
-const queryParser = require('../utils/queryParser')
 const authenticate = require('../utils/authenticate')
 
 getAllSongs = (req, res, next) => {
@@ -20,6 +19,7 @@ createSong = (req, res, next) => {
   if (authorization.error) {
     return next(authorization)
   }
+
   let payload = req.body
   let promise = model.createSong(payload)
 
@@ -36,6 +36,10 @@ createSong = (req, res, next) => {
 }
 
 deleteSong = (req, res, next) => {
+  let authorization = authenticate(req.headers.authorization)
+  if (authorization.error) {
+    return next(authorization)
+  }
   let id = req.params.id
   let promise = model.deleteSong(id)
 

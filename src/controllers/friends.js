@@ -1,7 +1,13 @@
 const model = require('../models/friends')
 const userModel = require('../models/users')
+const authenticate = require('../utils/authenticate')
 
 createFriend = (req, res, next) => {
+  let authorization = authenticate(req.headers.authorization)
+  if (authorization.error) {
+    return next(authorization)
+  }
+
   let payload = req.body
   let promise = model.createFriend(payload)
 
@@ -18,6 +24,11 @@ createFriend = (req, res, next) => {
 }
 
 deleteFriend = (req, res, next) => {
+  let authorization = authenticate(req.headers.authorization)
+  if (authorization.error) {
+    return next(authorization)
+  }
+
   let payload = req.body
   console.log(payload)
   let promise = model.deleteFriend(payload)

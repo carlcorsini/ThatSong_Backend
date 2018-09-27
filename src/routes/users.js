@@ -7,10 +7,9 @@ const ctrl = require('../controllers/users')
 // ===============================================
 
 router.get('/', ctrl.getAllUsers)
-router.get('/id/:id', ctrl.getUserById)
-router.get('/:username', ctrl.getUserByUsername)
+router.get('/:id', ctrl.getUserById)
 router.post('/login', ctrl.loginUser)
-router.post('/', ctrl.createUser)
+router.post('/register', ctrl.createUser)
 router.delete('/:id', ctrl.deleteUser)
 router.put('/:id', ctrl.updateUser)
 
