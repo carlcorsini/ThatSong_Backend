@@ -8,8 +8,9 @@ const authenticate = token => {
     if (!token || isEmpty(token)) {
       return { error: 'JWT required', status: 401 }
     }
+    const verify = jwt.verify(token, env.JWT_KEY)
 
-    const { exp } = jwt.verify(token, env.JWT_KEY)
+    const { exp } = verify
     if (exp * 1000 < Date.now()) {
       return { error: 'JWT expired', status: 401 }
     }

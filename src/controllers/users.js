@@ -34,6 +34,10 @@ getUserById = async (req, res, next) => {
   }
 
   let promise = model.getUserById(req.params.id)
+  let { message } = await promise
+  if (message == 'user not found') {
+    return next(await promise)
+  }
 
   promise.then(async result => {
     delete result.hashedPassword
@@ -117,11 +121,28 @@ loginUser = async (req, res, next) => {
   })
 }
 
-createUser = (req, res, next) => {
+createUser = async (req, res, next) => {
   let payload = req.body
-  let doesExist = model.getUserByUsername(payload.username.toLowerCase())
-  if (doesExist.username)
+
+  payload.profile_pic =
+    'https://cdn1.iconfinder.com/data/icons/ios-edge-line-12/25/User-Square-512.png'
+
+  let doesUsernameExist = await model.getUserByUsername(
+    payload.username.toLowerCase()
+  )
+
+  let doesEmailExist = await model.getUserByUsername(
+    payload.email.toLowerCase()
+  )
+
+  if (doesEmailExist.email) {
     return next({ error: 'that email is taken', status: '404' })
+  }
+
+  if (doesUsernameExist.username) {
+    return next({ error: 'that username is taken', status: '404' })
+  }
+
   let promise = model.createUser(payload)
 
   promise.then(result => {
@@ -162,6 +183,14 @@ updateUser = (req, res, next) => {
   })
 }
 
+token = (req, res, next) => {
+  let authorization = authenticate(req.headers.authorization)
+  if (authorization.error) {
+    return next(authorization)
+  }
+  res.status(200).json({ message: 'token valid' })
+}
+
 module.exports = {
   getAllUsers,
   getUserById,
@@ -169,5 +198,6 @@ module.exports = {
   getUserByUsername,
   createUser,
   deleteUser,
-  updateUser
+  updateUser,
+  token
 }
