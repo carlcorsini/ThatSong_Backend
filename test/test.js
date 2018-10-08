@@ -4,6 +4,7 @@ const expect = chai.expect
 const users = require('../src/models/users')
 const usersControllers = require('../src/controllers/users')
 const songs = require('../src/models/songs')
+const friends = require('../src/models/friends')
 const Response = require('./response')
 const config = require('../knexfile').test
 chai.use(require('chai-as-promised'))
@@ -200,6 +201,29 @@ describe('thatSong', function() {
         )
         expect(song.notes).to.equal('notes')
         expect(song.user_id).to.equal(2)
+      })
+    })
+  })
+
+  const friendData = {
+    follower_id: 3,
+    followee_id: 2
+  }
+
+  describe('#deleteFriend()', function() {
+    it('should delete one friend in the database', function() {
+      return friends.deleteFriend(friendData).then(result => {
+        expect(result.length).to.equal(1)
+        const friend = result[0]
+      })
+    })
+  })
+
+  describe('#createFriend()', function() {
+    it('should create one friend in the database', function() {
+      return friends.createFriend(friendData).then(result => {
+        expect(result.length).to.equal(2)
+        const friend = result[0]
       })
     })
   })

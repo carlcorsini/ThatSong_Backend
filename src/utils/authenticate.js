@@ -1,13 +1,15 @@
 const decode = require('jwt-decode')
+const jwt = require('jsonwebtoken')
 const isEmpty = require('./LangUtils')
+const env = require('../../env')
 
 const authenticate = token => {
   try {
-    if (isEmpty(token)) {
+    if (!token || isEmpty(token)) {
       return { error: 'JWT required', status: 401 }
     }
 
-    const { exp } = decode(token)
+    const { exp } = jwt.verify(token, env.JWT_KEY)
     if (exp * 1000 < Date.now()) {
       return { error: 'JWT expired', status: 401 }
     }
