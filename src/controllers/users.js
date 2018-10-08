@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const signJwt = promisify(jwt.sign)
 const bcrypt = require('bcryptjs')
 const authenticate = require('../utils/authenticate')
+const env = require('../../env')
 
 // ===============================================
 // USER CONTROLLERS
@@ -84,7 +85,7 @@ loginUser = async (req, res, next) => {
       // create JWT token
       promise.isLoggedIn = true
       const timeIssued = Math.floor(Date.now() / 1000)
-      const timeExpires = timeIssued + 86400 * 14
+      const timeExpires = timeIssued + 86400 * 28
       const token = await signJwt(
         {
           iss: 'thatSong',
@@ -93,7 +94,7 @@ loginUser = async (req, res, next) => {
           exp: timeExpires,
           identity: promise.id
         },
-        'secret'
+        env.JWT_KEY
       )
       // once token is created find user's songs and friends
       const songs = await getUserSongs(promise.id)

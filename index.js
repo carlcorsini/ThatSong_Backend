@@ -17,6 +17,8 @@ app.use('/songs', songRoutes)
 app.use('/users', userRoutes)
 app.use('/friends', friendRoutes)
 
+app.all('*', (req, res, next) => res.sendStatus(404))
+
 app.use((err, req, res, next) => {
   res.status(err.status).json(err)
 })
