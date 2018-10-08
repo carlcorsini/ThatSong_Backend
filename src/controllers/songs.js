@@ -9,7 +9,6 @@ getAllSongs = (req, res, next) => {
   })
 
   promise.catch(error => {
-    console.log(error)
     next(error)
   })
 }

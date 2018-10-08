@@ -13,7 +13,7 @@ const getUserById = id => {
   user = usersQuery.getUserById(id)
 
   return user.then(result => {
-    return result
+    return !result ? { message: 'user not found', status: 404 } : result
   })
 }
 
