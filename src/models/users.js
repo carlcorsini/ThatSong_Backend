@@ -53,8 +53,16 @@ const getUserSongs = id => {
   })
 }
 
-const getUserFriends = id => {
-  friends = usersQuery.getUserFriends(id)
+const getFollowers = id => {
+  friends = usersQuery.getFollowers(id)
+
+  return friends.then(result => {
+    return result
+  })
+}
+
+const getFollowing = id => {
+  friends = usersQuery.getFollowing(id)
 
   return friends.then(result => {
     return result
@@ -87,5 +95,6 @@ module.exports = {
   deleteUser,
   updateUser,
   getUserSongs,
-  getUserFriends
+  getFollowers,
+  getFollowing
 }

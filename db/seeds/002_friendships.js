@@ -64,6 +64,11 @@ exports.seed = function(knex, Promise) {
           id: 12,
           followee_id: 4,
           follower_id: 3
+        },
+        {
+          id: 13,
+          followee_id: 1,
+          follower_id: 5
         }
       ])
     })

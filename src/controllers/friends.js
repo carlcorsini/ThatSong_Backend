@@ -9,10 +9,11 @@ createFriend = (req, res, next) => {
   }
 
   let payload = req.body
+  console.log(payload)
   let promise = model.createFriend(payload)
 
   promise.then(async result => {
-    const friends = await getUserFriends(payload.follower_id)
+    const friends = await getFollowers(payload.follower_id)
     result.friends = friends
     return result.error ? next(result) : res.status(201).json(result)
   })
