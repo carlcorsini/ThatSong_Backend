@@ -14,9 +14,7 @@ const deleteFriend = payload => {
   friend = friendsQuery.deleteFriend(payload)
 
   return friend.then(result => {
-    return result.length < 1
-      ? { error: 'no relationship found', status: 404 }
-      : result
+    return result
   })
 }
 

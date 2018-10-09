@@ -42,9 +42,12 @@ getUserById = async (req, res, next) => {
   promise.then(async result => {
     delete result.hashedPassword
     const songs = await getUserSongs(req.params.id)
-    const friends = await getUserFriends(result.id)
+    const followers = await getFollowers(result.id)
+    const following = await getFollowing(result.id)
+
     result.userSongs = songs
-    result.friends = friends
+    result.followers = followers
+    result.following = following
 
     res.status(200).json(result)
   })
@@ -100,13 +103,15 @@ loginUser = async (req, res, next) => {
         },
         env.JWT_KEY
       )
-      // once token is created find user's songs and friends
+      // once token is created find user's songs, followers and following
       const songs = await getUserSongs(promise.id)
-      const friends = await getUserFriends(promise.id)
-      // attach token, songs and friends to response body
+      const followers = await getFollowers(promise.id)
+      const following = await getFollowing(promise.id)
+      // attach token, songs, followers, following to response body
       promise.token = token
       promise.userSongs = songs
-      promise.friends = friends
+      promise.followers = followers
+      promise.following = following
 
       res.status(200).json(promise)
 

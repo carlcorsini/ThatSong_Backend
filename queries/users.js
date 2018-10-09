@@ -36,10 +36,18 @@ getUserSongs = id => {
     .orderBy('created_at', 'desc')
 }
 
-getUserFriends = id => {
+getFollowers = id => {
   return knex('friendships')
     .join('users', 'users.id', '=', 'friendships.followee_id')
     .where('friendships.follower_id', id)
+    .select('users.id', 'users.username', 'users.profile_pic')
+    .orderBy('friendships.created_at', 'desc')
+}
+
+getFollowing = id => {
+  return knex('friendships')
+    .join('users', 'users.id', '=', 'friendships.follower_id')
+    .where('friendships.followee_id', id)
     .select('users.id', 'users.username', 'users.profile_pic')
     .orderBy('friendships.created_at', 'desc')
 }
@@ -66,7 +74,8 @@ module.exports = {
   getUserByUsername,
   createUser,
   getUserSongs,
-  getUserFriends,
+  getFollowers,
+  getFollowing,
   deleteUser,
   updateUser
 }

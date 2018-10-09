@@ -126,9 +126,9 @@ describe('thatSong', function() {
     })
   })
 
-  describe('#getUserFriends()', function() {
+  describe('#getFollowers()', function() {
     it('should return a list of all the friends belonging to one user in the database', function() {
-      return users.getUserFriends(1).then(result => {
+      return users.getFollowers(1).then(result => {
         expect(result.length).to.equal(3)
 
         const data = result[0]
