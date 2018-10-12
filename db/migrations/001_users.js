@@ -3,7 +3,10 @@ exports.up = function(knex, Promise) {
     table.increments()
     table.text('first_name').notNullable()
     table.text('last_name').notNullable()
-    table.text('username').notNullable()
+    table
+      .text('username')
+      .notNullable()
+      .unique()
     table
       .text('email')
       .notNullable()
