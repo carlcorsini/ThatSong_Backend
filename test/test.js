@@ -1,4 +1,4 @@
-require('dotenv').load()
+// require('dotenv').load()
 const chai = require('chai')
 const expect = chai.expect
 const users = require('../src/models/users')
@@ -9,8 +9,8 @@ const Response = require('./response')
 const config = require('../knexfile').test
 chai.use(require('chai-as-promised'))
 
-describe('thatSong', function() {
-  before(function() {
+describe('thatSong', () => {
+  before(() => {
     const tmpConnection = require('knex')({
       client: 'pg',
       connection: config.connection
@@ -28,8 +28,8 @@ describe('thatSong', function() {
       .catch(() => console.log(`Migrations or seeds failed.`))
   })
 
-  describe('#getAllUsers()', function() {
-    it('should return a list of all the users in the database', function() {
+  describe('#getAllUsers()', () => {
+    it('should return a list of all the users in the database', () => {
       return users.getAllUsers().then(result => {
         expect(result.length).to.equal(6)
 
@@ -40,8 +40,8 @@ describe('thatSong', function() {
     })
   })
 
-  describe('#getUserById()', function() {
-    it('should return one user from the database', function() {
+  describe('#getUserById()', () => {
+    it('should return one user from the database', () => {
       return users.getUserById(1).then(result => {
         expect(result.id).to.be.ok
         expect(result.id).to.equal(1)
@@ -51,8 +51,8 @@ describe('thatSong', function() {
     })
   })
 
-  describe('#getUserByUsername()', function() {
-    it('should return one user from the database', function() {
+  describe('#getUserByUsername()', () => {
+    it('should return one user from the database', () => {
       return users.getUserByUsername('djshmarl').then(result => {
         expect(result.id).to.be.ok
         expect(result.id).to.equal(1)
@@ -71,8 +71,8 @@ describe('thatSong', function() {
 
   const res = new Response()
 
-  describe('#loginUser()', function() {
-    it('should login one user and return a request body', function() {
+  describe('#loginUser()', () => {
+    it('should login one user and return a request body', () => {
       return usersControllers.loginUser(loginUserData, res).then(result => {
         expect(user.client).to.be.ok
       })
@@ -81,8 +81,8 @@ describe('thatSong', function() {
 
   const updateUserData = { first_name: 'jerry', last_name: 'garcia' }
 
-  describe('#updateUser()', function() {
-    it('should update one user from the database', function() {
+  describe('#updateUser()', () => {
+    it('should update one user from the database', () => {
       return users.updateUser(1, updateUserData).then(result => {
         const user = result[0]
         expect(user.id).to.equal(1)
@@ -100,8 +100,8 @@ describe('thatSong', function() {
     password: 'Password123!'
   }
 
-  describe('#createUser()', function() {
-    it('should create one user from the database', function() {
+  describe('#createUser()', () => {
+    it('should create one user from the database', () => {
       return users.createUser(createUserData).then(result => {
         const user = result[0]
         expect(user.id).to.equal(7)
@@ -111,8 +111,8 @@ describe('thatSong', function() {
     })
   })
 
-  describe('#getUserSongs()', function() {
-    it('should return a list of all the songs belonging to one user in the database', function() {
+  describe('#getUserSongs()', () => {
+    it('should return a list of all the songs belonging to one user in the database', () => {
       return users.getUserSongs(1).then(result => {
         expect(result.length).to.equal(2)
 
@@ -126,8 +126,8 @@ describe('thatSong', function() {
     })
   })
 
-  describe('#getFollowers()', function() {
-    it('should return a list of all the friends belonging to one user in the database', function() {
+  describe('#getFollowers()', () => {
+    it('should return a list of all the friends belonging to one user in the database', () => {
       return users.getFollowers(1).then(result => {
         expect(result.length).to.equal(3)
 
@@ -137,8 +137,8 @@ describe('thatSong', function() {
     })
   })
 
-  describe('#deleteUser()', function() {
-    it('should delete one user from the database', function() {
+  describe('#deleteUser()', () => {
+    it('should delete one user from the database', () => {
       return users.deleteUser(1).then(result => {
         const user = result[0]
         expect(user.id).to.equal(2)
@@ -148,8 +148,8 @@ describe('thatSong', function() {
     })
   })
 
-  describe('#getAllSongs()', function() {
-    it('should return a list of all the songs in the database', function() {
+  describe('#getAllSongs()', () => {
+    it('should return a list of all the songs in the database', () => {
       return songs.getAllSongs().then(result => {
         expect(result.length).to.equal(4)
 
@@ -172,8 +172,8 @@ describe('thatSong', function() {
     user_id: 3
   }
 
-  describe('#createSong()', function() {
-    it('should create one song in the database', function() {
+  describe('#createSong()', () => {
+    it('should create one song in the database', () => {
       return songs.createSong(createSongData).then(result => {
         const song = result[0]
 
@@ -187,8 +187,8 @@ describe('thatSong', function() {
     })
   })
 
-  describe('#deleteSong()', function() {
-    it('should delete one song in the database', function() {
+  describe('#deleteSong()', () => {
+    it('should delete one song in the database', () => {
       return songs.deleteSong(7).then(result => {
         expect(result.length).to.equal(4)
         const song = result[0]
@@ -210,8 +210,8 @@ describe('thatSong', function() {
     followee_id: 2
   }
 
-  describe('#deleteFriend()', function() {
-    it('should delete one friend in the database', function() {
+  describe('#deleteFriend()', () => {
+    it('should delete one friend in the database', () => {
       return friends.deleteFriend(friendData).then(result => {
         expect(result.length).to.equal(1)
         const friend = result[0]
@@ -219,8 +219,8 @@ describe('thatSong', function() {
     })
   })
 
-  describe('#createFriend()', function() {
-    it('should create one friend in the database', function() {
+  describe('#createFriend()', () => {
+    it('should create one friend in the database', () => {
       return friends.createFriend(friendData).then(result => {
         expect(result.length).to.equal(2)
         const friend = result[0]
