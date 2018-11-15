@@ -28,7 +28,7 @@ module.exports = {
     client: 'pg',
     connection: {
       host: 'localhost',
-      database: 'thatSong_test'
+      database: 'thatsong_test'
     },
     migrations: {
       directory: './db/migrations'

@@ -1,4 +1,3 @@
-// require('dotenv').load()
 const chai = require('chai')
 const expect = chai.expect
 const users = require('../src/models/users')
@@ -9,6 +8,25 @@ const Response = require('./response')
 const config = require('../knexfile').test
 chai.use(require('chai-as-promised'))
 
+describe('ThatSong', () => {
+  before(() => {
+    const tmpConnection = require('knex')({
+      client: 'pg',
+      connection: config.connection
+    })
+    return tmpConnection
+      .raw(`CREATE DATABASE ${config.connection.database};`)
+      .catch(err => {
+        Promise.resolve('Everything is OK')
+      })
+      .then(() => (global.knex = require('../queries/db')))
+      .then(() => knex.migrate.rollback())
+      .then(() => knex.migrate.latest(config))
+      .then(() => knex.seed.run())
+      .catch(() => console.log(`Migrations or seeds failed.`))
+  })
+})
+
 describe('thatSong', () => {
   before(() => {
     const tmpConnection = require('knex')({
@@ -18,7 +36,6 @@ describe('thatSong', () => {
     return tmpConnection
       .raw(`CREATE DATABASE ${config.connection.database};`)
       .catch(err => {
-        // console.log(err)
         Promise.resolve('Everything is OK')
       })
       .then(() => (global.knex = require('../queries/db')))
@@ -35,7 +52,7 @@ describe('thatSong', () => {
 
         const user = result[0]
         expect(user.id).to.be.ok
-        expect(user.first_name).to.be.ok
+        expect(user.first_name).to.equal('Carl')
       })
     })
   })
@@ -93,8 +110,8 @@ describe('thatSong', () => {
   })
 
   const createUserData = {
-    first_name: 'john',
-    last_name: 'jerry',
+    first_name: 'barry ',
+    last_name: 'bonds',
     email: 'john@jerry.jerry',
     username: 'heresjohnny',
     password: 'Password123!'
@@ -105,8 +122,8 @@ describe('thatSong', () => {
       return users.createUser(createUserData).then(result => {
         const user = result[0]
         expect(user.id).to.equal(7)
-        expect(user.first_name).to.equal('john')
-        expect(user.last_name).to.equal('jerry')
+        expect(user.first_name).to.equal('barry')
+        expect(user.last_name).to.equal('bonds')
       })
     })
   })

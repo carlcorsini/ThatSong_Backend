@@ -1,21 +1,24 @@
 const knex = require('./db')
-const uuid = require('uuid/v4')
 
 // ===============================================
 // MANAGE USER DATA
 // ===============================================
 
-getAllUsers = () => {
+const getAllUsers = () => {
   return knex('users').orderBy('created_at', 'desc')
 }
 
-getUserById = id => {
+const getUserById = id => {
   return knex('users')
     .where('id', id)
     .first()
+    .catch(error => {
+      console.log(error)
+      return { error: 'error retrieving user', status: 500 }
+    })
 }
 
-getUserByUsername = username => {
+const getUserByUsername = username => {
   return knex('users')
     .whereRaw(`Lower(username) LIKE ?`, `%${username}%`)
     .orWhereRaw(`Upper(username) LIKE ?`, `%${username}%`)
@@ -24,19 +27,22 @@ getUserByUsername = username => {
     .first()
 }
 
-createUser = payload => {
+const createUser = payload => {
   return knex('users')
     .insert(payload)
     .returning('*')
+    .catch(error => {
+      return error
+    })
 }
 
-getUserSongs = id => {
+const getUserSongs = id => {
   return knex('songs')
     .where('user_id', id)
     .orderBy('created_at', 'desc')
 }
 
-getFollowers = id => {
+const getFollowers = id => {
   return knex('friendships')
     .join('users', 'users.id', '=', 'friendships.followee_id')
     .where('friendships.follower_id', id)
@@ -44,7 +50,7 @@ getFollowers = id => {
     .orderBy('friendships.created_at', 'desc')
 }
 
-getFollowing = id => {
+const getFollowing = id => {
   return knex('friendships')
     .join('users', 'users.id', '=', 'friendships.follower_id')
     .where('friendships.followee_id', id)
@@ -52,7 +58,7 @@ getFollowing = id => {
     .orderBy('friendships.created_at', 'desc')
 }
 
-deleteUser = id => {
+const deleteUser = id => {
   return knex('users')
     .where('id', id)
     .del()
@@ -61,7 +67,7 @@ deleteUser = id => {
     })
 }
 
-updateUser = (id, payload) => {
+const updateUser = (id, payload) => {
   return knex('users')
     .where('id', id)
     .update(payload)

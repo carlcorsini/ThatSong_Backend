@@ -5,12 +5,13 @@ const signJwt = promisify(jwt.sign)
 const bcrypt = require('bcryptjs')
 const authenticate = require('../utils/authenticate')
 const env = require('../../env')
+let usersValidators = require('../utils/validators/users_validator')
 
 // ===============================================
 // USER CONTROLLERS
 // ===============================================
 
-getAllUsers = (req, res, next) => {
+const getAllUsers = async (req, res, next) => {
   let authorization = authenticate(req.headers.authorization)
   if (authorization.error) {
     return next(authorization)
@@ -27,23 +28,26 @@ getAllUsers = (req, res, next) => {
   })
 }
 
-getUserById = async (req, res, next) => {
+const getUserById = async (req, res, next) => {
   let authorization = authenticate(req.headers.authorization)
   if (authorization.error) {
     return next(authorization)
   }
 
   let promise = model.getUserById(req.params.id)
-  let { message } = await promise
-  if (message == 'user not found') {
+  let { message, error } = await promise
+  if (message == 'user not found' || error == 'error retrieving user') {
     return next(await promise)
   }
 
   promise.then(async result => {
     delete result.hashedPassword
-    const songs = await getUserSongs(req.params.id)
-    const followers = await getFollowers(result.id)
-    const following = await getFollowing(result.id)
+
+    let [songs, followers, following] = await Promise.all([
+      model.getUserSongs(req.params.id),
+      model.getFollowers(result.id),
+      model.getFollowing(result.id)
+    ])
 
     result.userSongs = songs
     result.followers = followers
@@ -57,7 +61,7 @@ getUserById = async (req, res, next) => {
   })
 }
 
-getUserByUsername = (req, res, next) => {
+const getUserByUsername = (req, res, next) => {
   let promise = model.getUserByUsername(req.params.username.toLowerCase())
 
   promise.then(result => {
@@ -69,7 +73,7 @@ getUserByUsername = (req, res, next) => {
   })
 }
 
-loginUser = async (req, res, next) => {
+const loginUser = async (req, res, next) => {
   let payload = req.body
   // find user in database using username off of payload
   let promise = await model.getUserByUsername(payload.username.toLowerCase())
@@ -104,9 +108,10 @@ loginUser = async (req, res, next) => {
         env.JWT_KEY
       )
       // once token is created find user's songs, followers and following
-      const songs = await getUserSongs(promise.id)
-      const followers = await getFollowers(promise.id)
-      const following = await getFollowing(promise.id)
+      const songs = await model.getUserSongs(promise.id)
+      const followers = await model.getFollowers(promise.id)
+      const following = await model.getFollowing(promise.id)
+
       // attach token, songs, followers, following to response body
       promise.token = token
       promise.userSongs = songs
@@ -126,8 +131,10 @@ loginUser = async (req, res, next) => {
   })
 }
 
-createUser = async (req, res, next) => {
+const createUser = async (req, res, next) => {
   let payload = req.body
+  let isValid = usersValidators.createUser(payload)
+  if (!isValid) return next(isValid)
 
   payload.profile_pic =
     'https://cdn1.iconfinder.com/data/icons/ios-edge-line-12/25/User-Square-512.png'
@@ -160,7 +167,7 @@ createUser = async (req, res, next) => {
   })
 }
 
-deleteUser = (req, res, next) => {
+const deleteUser = (req, res, next) => {
   let id = Number(req.params.id)
 
   let promise = model.deleteUser(id)
@@ -174,7 +181,7 @@ deleteUser = (req, res, next) => {
   })
 }
 
-updateUser = (req, res, next) => {
+const updateUser = (req, res, next) => {
   let id = Number(req.params.id)
   let payload = req.body
   let promise = model.updateUser(id, payload)
@@ -188,7 +195,7 @@ updateUser = (req, res, next) => {
   })
 }
 
-token = (req, res, next) => {
+const token = (req, res, next) => {
   let authorization = authenticate(req.headers.authorization)
   if (authorization.error) {
     return next(authorization)

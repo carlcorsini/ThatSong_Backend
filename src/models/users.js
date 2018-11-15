@@ -41,7 +41,7 @@ const createUser = payload => {
   user = usersQuery.createUser(payload)
 
   return user.then(result => {
-    return !result ? { error: 'user was not created', status: 404 } : result
+    return !result ? { error: 'user was not created', status: 500 } : result
   })
 }
 
