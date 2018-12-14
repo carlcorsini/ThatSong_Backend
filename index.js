@@ -7,7 +7,7 @@ const cors = require('cors')
 
 if (process.env.NODE_ENV !== 'test') app.use(morgan('dev'))
 app.use(bodyParser.json())
-app.use(cors())
+app.use(cors({ exposedHeaders: ['authorization'] }))
 
 const songRoutes = require('./src/routes/songs.js')
 const userRoutes = require('./src/routes/users.js')
