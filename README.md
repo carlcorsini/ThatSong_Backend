@@ -1,5 +1,7 @@
 # ThatSong
 
+<a href="https://imgur.com/CyXMJIl"><img src="https://i.imgur.com/CyXMJIl.png" title="source: imgur.com" /></a>
+
 ThatSong is platform created by [Carl Corsini] that enables soundcloud users to store timestamps from tracks on soundcloud with a click of a button. ThatSong utilizes a React-App ([ThatSong]) and [Chrome Extension] in conjunction with a Node.js Rest API.
 
 * React-App - [ThatSong]
