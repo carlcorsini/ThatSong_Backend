@@ -1,5 +1,5 @@
 const knex = require('./db')
-const uuid = require('uuid/v4')
+const uuid = require('uuid')
 
 // ===============================================
 // MANAGE USER DATA
